@@ -58,6 +58,7 @@ docker-compose up -d
 ```
 
 
+
 ## native without docker
 ### download from github
 --8<-- "docs/install/download.md"
@@ -94,3 +95,123 @@ To be able to have a working KREE instance it is needed to have python3/python3-
     ```shell
     java -jar target/kosmos.jar -c myconfig.json
     ``` 
+
+
+
+## kubernetes example
+This is an example for a kubernetes deployment, the kubernetes deployment does not setup home assistant automatically.
+Kubernetes is a rather complex issue and this is only to have a starting point if needed.
+We recommend using the docker-compose deployment.
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: kosmos-platform
+  name: kosmos-platform
+  namespace: kosmos
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: kosmos-platform
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: kosmos-platform
+    spec:
+      containers:
+        - env:
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+            - name: SETUPHA
+              value: "0"
+            - name: USE_ROS2
+              value: "0"
+            - name: USERS
+              value: '[{"username":"ha","password":"<update>","level":1},{"username":"admin","level":100,"password":"<update>"}]'
+            - name: OWM_KEY
+              value: "<update>"
+          image: ghcr.io/kosmos-lab/kosmos-platform:0.8.7a
+          imagePullPolicy: Always
+          name: kosmos-platform
+          ports:
+            - containerPort: 18080
+            - containerPort: 1883
+          resources: {}
+          volumeMounts:
+            - mountPath: /app/config
+              name: kosmos-platform-config
+            - mountPath: /app/db
+              name: kosmos-platform-db
+            - mountPath: /app/plugins
+              name: kosmos-platform-plugins
+            - mountPath: /app/rules/rules
+              name: kosmos-platform-rules
+            - mountPath: /app/web/oz/assets/ui.json
+              name: kosmos-platform-uijson
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /gv0/kosmos/config
+          name: kosmos-platform-config
+        - hostPath:
+            path: /gv0/kosmos/db
+          name: kosmos-platform-db
+        - hostPath:
+            path: /gv0/kosmos/plugins
+          name: kosmos-platform-plugins
+        - hostPath:
+            path: /gv0/kosmos/rules
+          name: kosmos-platform-rules
+        - hostPath:
+            path: /gv0/kosmos/oz/ui.json
+          name: kosmos-platform-uijson
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: kosmos-platform
+  name: kosmos-platform
+  namespace: kosmos
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "18080"
+      port: 18080
+      targetPort: 18080
+    - name: "1883"
+      port: 1883
+      targetPort: 1883
+  selector:
+    io.kompose.service: kosmos-platform
+status:
+  loadBalancer: {}
+---  
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kosmos
+  namespace: kosmos
+spec:
+  rules:
+    - host: "kosmos.<update>"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kosmos-platform
+                port:
+                  number: 18080
+```

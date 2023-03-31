@@ -10,18 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
-        uses: actions/checkout@v2
-      - name: Checkout tools repo
+        uses: actions/checkout@v3
+      - name: Checkout tools repo # checkout the platform to get the newest files to use 
         uses: actions/checkout@v3
         with:
           repository: kosmos-lab/kosmos-platform
           path: kosmos-platform
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
-        # Or use mhausenblas/mkdocs-deploy-gh-pages@nomaterial to build without the mkdocs-material theme
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONFIG_FILE: mkdocs.yml
           EXTRA_PACKAGES: build-base
-          # GITHUB_DOMAIN: github.myenterprise.com
           REQUIREMENTS: requirements.txt
