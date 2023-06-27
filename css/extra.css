@@ -1,0 +1,65 @@
+
+
+@font-face {
+  font-family: 'Source Code Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/source-code-pro-v20-latin-regular.eot');
+  src: local(''),
+       url('../fonts/source-code-pro-v20-latin-regular.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/source-code-pro-v20-latin-regular.woff2') format('woff2'), 
+       url('../fonts/source-code-pro-v20-latin-regular.woff') format('woff'), 
+       url('../fonts/source-code-pro-v20-latin-regular.ttf') format('truetype'), 
+       url('../fonts/source-code-pro-v20-latin-regular.svg#SourceCodePro') format('svg'); 
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/jetbrains-mono-v11-latin-regular.eot');
+  src: local(''),
+       url('../fonts/jetbrains-mono-v11-latin-regular.eot?#iefix') format('embedded-opentype'), 
+       url('../fonts/jetbrains-mono-v11-latin-regular.woff2') format('woff2'), 
+       url('../fonts/jetbrains-mono-v11-latin-regular.woff') format('woff'), 
+       url('../fonts/jetbrains-mono-v11-latin-regular.ttf') format('truetype'), 
+       url('../fonts/jetbrains-mono-v11-latin-regular.svg#JetBrainsMono') format('svg'); 
+}
+
+:root {
+  --md-primary-fg-color:        #3f4d67;
+  
+
+
+  
+}
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color:        #3f4d67;
+    
+        --md-typeset-a-color: #a9b7d0;
+        
+    /*--md-text-font-family: 'Source Code Pro', sans-serif;*/
+/*--md-text-font-family: 'Jetbrains Mono', sans-serif;        */
+
+}
+[data-md-color-scheme="default"] {
+    --md-primary-fg-color:        #3f4d67;
+    /*--md-text-font-family: 'Source Code Pro', sans-serif;*/
+        
+}
+/*
+.md-grid {
+    
+  margin-left: 0px;
+  margin-right: 0px;
+  max-width: 100%;
+  
+}
+.md-main__inner {
+  margin-top: 0px;
+}
+.md-sidebar__scrollwrap {
+  margin: 0px;
+}
+.md-sidebar--primary {
+background-color: var(--md-primary-fg-color);
+}*/
